@@ -1,5 +1,11 @@
 name: cti_yare_mehraban_test
 description: "A new Flutter project."
+authors:
+  - Anahita Sabaghi <anahita.rastegar@gmail.com>
+  - Zahra Abdullahi <Zahra.abdullahi22@gmail.com>
+  - Sohaila Saleh <Sohaila.Saleh2021@gmail.com>
+  - Mursal Ahmadi <mursal.adel123@gmail.com>
+
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
