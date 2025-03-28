@@ -10,16 +10,23 @@ class AppColors {
   static const Color textOnDark = Colors.white;
   static const Color textOnLight = Colors.black;
   static final Color textOnDisabled = textOnPrimary.withValues(alpha: 128);
+
+  // New custom button colors
+  static const Color buttonShadowColor = Color(0xFFFFDE6C);
+  static const Color buttonShadowBoxColor = Color(0xFFFFD540);
+  static const Color buttonMainColor = Color(0xFFFFCF25);
+  static const Color buttonMainShadowColor = Color(0xFFECB800);
 }
 
 class AppStyles {
+  // Existing button styles (for other parts if needed)
   static final ButtonStyle buttonStyle = ElevatedButton.styleFrom(
     backgroundColor: AppColors.primary,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(15),
     ),
     padding: const EdgeInsets.symmetric(vertical: 20),
-    minimumSize: const Size(348, 70), // Fixed size
+    minimumSize: const Size(348, 70),
   );
 
   static final ButtonStyle disabledButtonStyle = ElevatedButton.styleFrom(
@@ -28,7 +35,7 @@ class AppStyles {
       borderRadius: BorderRadius.circular(15),
     ),
     padding: const EdgeInsets.symmetric(vertical: 20),
-    minimumSize: const Size(348, 70), // Fixed size
+    minimumSize: const Size(348, 70),
   );
 
   static final TextStyle buttonTextStyle = TextStyle(
@@ -40,6 +47,21 @@ class AppStyles {
 
   static final TextStyle disabledButtonTextStyle = TextStyle(
     color: AppColors.textOnDisabled,
+    fontSize: 26,
+    fontWeight: FontWeight.bold,
+    fontFamily: 'IRANSansDN',
+  );
+
+  // New custom button text style for home page
+  static final TextStyle customButtonTextStyle = TextStyle(
+    color: Colors.black,
+    fontSize: 26,
+    fontWeight: FontWeight.w700,
+    fontFamily: 'IRANSansDN',
+  );
+
+  static final TextStyle appBarTextStyle = TextStyle(
+    color: Colors.white,
     fontSize: 24,
     fontWeight: FontWeight.bold,
     fontFamily: 'IRANSansDN',

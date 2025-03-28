@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/custom_button.dart';
 import '../theme/app_styles.dart';
+import 'alphabet_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -20,7 +21,15 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CustomButton(text: 'حروف الفبا', onPressed: () {}),
+              CustomButton(
+                text: 'حروف الفبا',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AlphabetPage()),
+                  );
+                },
+              ),
               const SizedBox(height: 20),
               CustomButton(text: 'رنگ‌ها', onPressed: () {}),
               const SizedBox(height: 20),
@@ -29,13 +38,13 @@ class HomeScreen extends StatelessWidget {
               CustomButton(
                 text: 'ریاضی',
                 onPressed: () {},
-                isDisabled: true, // Disabled button
+                isActive: false, // Disabled button
               ),
               const SizedBox(height: 20),
               CustomButton(
                 text: 'داستان‌ها',
                 onPressed: () {},
-                isDisabled: true, // Disabled button
+                isActive: false, // Disabled button
               ),
             ],
           ),
