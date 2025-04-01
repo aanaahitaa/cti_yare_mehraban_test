@@ -9,7 +9,7 @@ class AppColors {
   static const Color textOnPrimary = Colors.white;
   static const Color textOnDark = Colors.white;
   static const Color textOnLight = Colors.black;
-  static final Color textOnDisabled = textOnPrimary.withValues(alpha: 128);
+  static final Color textOnDisabled = textOnPrimary.withOpacity(0.5);
 
   // New custom button colors
   static const Color buttonShadowColor = Color(0xFFFFDE6C);
@@ -30,7 +30,7 @@ class AppStyles {
   );
 
   static final ButtonStyle disabledButtonStyle = ElevatedButton.styleFrom(
-    backgroundColor: AppColors.disabled.withValues(alpha: 128),
+    backgroundColor: AppColors.disabled.withOpacity(0.5),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(15),
     ),
