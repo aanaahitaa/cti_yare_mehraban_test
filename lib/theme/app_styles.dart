@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   static const Color primary = Color(0xFFA01321);
-  static const Color disabled = Color(0xFFA01321);
+  static const Color primaryDisabled = Color(0xFFBC7E85);
   static const Color backgroundStart = Color(0xFF526B33);
   static const Color backgroundEnd = Color(0xFFE5E3B1);
 
@@ -11,7 +11,6 @@ class AppColors {
   static const Color textOnLight = Colors.black;
   static final Color textOnDisabled = textOnPrimary.withOpacity(0.5);
 
-  // New custom button colors
   static const Color buttonShadowColor = Color(0xFFFFDE6C);
   static const Color buttonShadowBoxColor = Color(0xFFFFD540);
   static const Color buttonMainColor = Color(0xFFFFCF25);
@@ -19,7 +18,6 @@ class AppColors {
 }
 
 class AppStyles {
-  // Existing button styles (for other parts if needed)
   static final ButtonStyle buttonStyle = ElevatedButton.styleFrom(
     backgroundColor: AppColors.primary,
     shape: RoundedRectangleBorder(
@@ -30,7 +28,7 @@ class AppStyles {
   );
 
   static final ButtonStyle disabledButtonStyle = ElevatedButton.styleFrom(
-    backgroundColor: AppColors.disabled.withOpacity(0.5),
+    backgroundColor: AppColors.primaryDisabled,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(15),
     ),
@@ -52,7 +50,6 @@ class AppStyles {
     fontFamily: 'IRANSansDN',
   );
 
-  // New custom button text style for home page
   static final TextStyle customButtonTextStyle = TextStyle(
     color: Colors.black,
     fontSize: 26,
