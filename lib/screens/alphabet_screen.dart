@@ -1,54 +1,53 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import '../theme/app_styles.dart';
 
 class AlphabetPage extends StatelessWidget {
-  final List<String> letters = [
+  final List<String> letters = const [
     'آ', 'ب', 'پ', 'ت', 'ث', 'ج', 'چ', 'ح', 'خ', 'د',
     'ذ', 'ر', 'ز', 'ژ', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ',
     'ع', 'غ', 'ف', 'ق', 'ک', 'گ', 'ل', 'م', 'ن', 'و', 'ه', 'ی'
   ];
 
+  const AlphabetPage({super.key});
+
   @override
   Widget build(BuildContext context) {
+    double itemHeight = 110;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('آموزش الفبا', style: AppStyles.appBarTextStyle),
         backgroundColor: AppColors.backgroundStart,
       ),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          double itemHeight = 100; // ارتفاع هر دکمه
-          double totalHeight = letters.length * itemHeight;
+      body: ListView.builder(
+        reverse: true, // شروع از پایین
+        itemCount: letters.length,
+        itemExtent: itemHeight,
+        itemBuilder: (context, index) {
+          return Stack(
+            children: [
+              // مسیر قبل از دکمه بیاد تا پشتش باشه
+              if (index < letters.length - 1)
+                CustomPaint(
+                  painter: PathSegmentPainter(
+                    fromLeft: index.isEven,
+                    toLeft: (index + 1).isEven,
+                    itemHeight: itemHeight,
+                  ),
+                  size: Size.infinite,
+                ),
 
-          return SingleChildScrollView(
-            reverse: true, // شروع از پایین
-            child: SizedBox(
-              height: totalHeight,
-              child: Stack(
-                children: [
-                  // مسیر مارپیچ که همراه دکمه‌ها حرکت می‌کند
-                  Positioned.fill(
-                    child: CustomPaint(
-                      painter: PathPainter(letters.length, itemHeight),
-                    ),
-                  ),
-                  // لیست دکمه‌های الفبا
-                  ListView.builder(
-                    reverse: true,
-                    physics: NeverScrollableScrollPhysics(), // اسکرول را به SingleChildScrollView بسپار
-                    itemCount: letters.length,
-                    itemBuilder: (context, index) {
-                      return Align(
-                        alignment: index.isEven ? Alignment.centerLeft : Alignment.centerRight,
-                        child: LetterButton(text: letters[index], isActive: index == 0),
-                      );
-                    },
-                  ),
-                ],
+              // دکمه
+              Align(
+                alignment: index.isEven
+                    ? Alignment.centerLeft
+                    : Alignment.centerRight,
+                child: LetterButton(
+                  text: letters[index],
+                  isActive: index == 0,
+                ),
               ),
-            ),
+            ],
           );
         },
       ),
@@ -60,7 +59,11 @@ class LetterButton extends StatelessWidget {
   final String text;
   final bool isActive;
 
-  const LetterButton({required this.text, required this.isActive});
+  const LetterButton({
+    super.key,
+    required this.text,
+    required this.isActive,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -69,23 +72,24 @@ class LetterButton extends StatelessWidget {
       width: 80,
       height: 80,
       decoration: BoxDecoration(
-        color: isActive ? AppColors.primary : AppColors.disabled.withOpacity(0.5),
+        color: isActive ? AppColors.primary : AppColors.primaryDisabled,
         shape: BoxShape.circle,
-        boxShadow: [
-          if (isActive)
-            BoxShadow(
-              color: AppColors.primary.withOpacity(0.7),
-              blurRadius: 8,
-              offset: const Offset(0, 3),
-            ),
-        ],
+        boxShadow: isActive
+            ? [
+          BoxShadow(
+            color: AppColors.primary.withOpacity(0.6),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          )
+        ]
+            : [],
       ),
       child: Center(
         child: Text(
           text,
           style: const TextStyle(
-            color: Colors.white,
             fontSize: 24,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -94,55 +98,57 @@ class LetterButton extends StatelessWidget {
   }
 }
 
-class PathPainter extends CustomPainter {
-  final int itemCount;
+class PathSegmentPainter extends CustomPainter {
+  final bool fromLeft;
+  final bool toLeft;
   final double itemHeight;
 
-  PathPainter(this.itemCount, this.itemHeight);
+  PathSegmentPainter({
+    required this.fromLeft,
+    required this.toLeft,
+    required this.itemHeight,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()
-      ..color = Colors.grey.shade500.withOpacity(0.5) // رنگ خاکستری خط‌چین
+    final paint = Paint()
+      ..color = Colors.grey.withOpacity(0.5)
       ..strokeWidth = 3
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round;
+      ..strokeCap = StrokeCap.round // ← گوشه‌های گرد
+      ..style = PaintingStyle.stroke;
 
-    Path path = Path();
-    double startY = size.height - itemHeight / 1.2; // شروع از پایین
+    // تنظیم مختصات برای مسیر
+    double startX = fromLeft ? 40 : size.width - 40;
+    double startY = size.height - (itemHeight / 2); // شروع از پایین
 
-    path.moveTo(size.width * 0.2, startY);
+    double endX = toLeft ? 40 : size.width - 40;
+    double endY = size.height - (itemHeight + itemHeight / 2); // پایان مسیر از پایین
 
-    for (int i = 0; i < itemCount; i++) {
-      double controlX = i.isEven ? size.width * 1.32 : size.width * -0.2;
-      double controlY = startY - (i + 0.5) * itemHeight;
-      double endX = size.width * 0.5;
-      double endY = startY - ((i + 1) * itemHeight) + (itemHeight / 50);
+    double controlX = size.width / 2;
+    double controlY = startY - (itemHeight / 2); // کنترل مسیر به سمت بالا
 
-      path.quadraticBezierTo(controlX, controlY, endX, endY);
-    }
+    final path = Path();
+    path.moveTo(startX, startY);
+    path.quadraticBezierTo(controlX, controlY, endX, endY);
 
     drawDashedLine(canvas, path, paint);
   }
 
   void drawDashedLine(Canvas canvas, Path path, Paint paint) {
-    PathMetric pathMetric = path.computeMetrics().first;
-    double dashLength = 10.0;
-    double gapLength = 10.0;
-    double distance = 0.0;
+    for (final metric in path.computeMetrics()) {
+      double dashLength = 12;
+      double gapLength = 8;
+      double distance = 0;
 
-    while (distance < pathMetric.length) {
-      double nextDistance = distance + dashLength;
-      if (nextDistance > pathMetric.length) nextDistance = pathMetric.length;
-
-      canvas.drawPath(
-        pathMetric.extractPath(distance, nextDistance),
-        paint,
-      );
-      distance += dashLength + gapLength;
+      while (distance < metric.length) {
+        final next = distance + dashLength;
+        final subPath = metric.extractPath(distance, next.clamp(0, metric.length));
+        canvas.drawPath(subPath, paint);
+        distance += dashLength + gapLength;
+      }
     }
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
