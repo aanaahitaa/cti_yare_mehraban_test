@@ -1,0 +1,2 @@
+/Users/anahitasabaghi/StudioProjects/cti_yare_mehraban_test/android/app/.cxx/RelWithDebInfo/273h454m/x86_64/CMakeFiles/edit_cache.dir
+/Users/anahitasabaghi/StudioProjects/cti_yare_mehraban_test/android/app/.cxx/RelWithDebInfo/273h454m/x86_64/CMakeFiles/rebuild_cache.dir
