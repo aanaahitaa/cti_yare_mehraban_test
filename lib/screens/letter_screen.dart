@@ -5,7 +5,7 @@ import '../theme/app_styles.dart';
 
 class LetterDetailPage extends StatefulWidget {
   final String letter;
-  final int index; // برای مشخص کردن جایگاه حرف
+  final int index;
 
   const LetterDetailPage({
     super.key,
@@ -20,18 +20,18 @@ class LetterDetailPage extends StatefulWidget {
 class _LetterDetailPageState extends State<LetterDetailPage> {
   final AudioPlayer _audioPlayer = AudioPlayer();
   bool isDrawn = false;
+  late List<Offset?> points;
 
   @override
   void initState() {
     super.initState();
     playLetterSound();
+    points = [];
   }
 
   Future<void> playLetterSound() async {
-    // TODO: Sohaila - فرض: صداها داخل assets/sounds/ با نام حرف هستند، مثلاً آ → sounds/alef.mp3
     await _audioPlayer.play(AssetSource('sounds/${widget.letter}.mp3'));
   }
-
 
   @override
   void dispose() {
@@ -43,12 +43,24 @@ class _LetterDetailPageState extends State<LetterDetailPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => LetterGamePage(
+        builder: (context) => LetterGamePage(
           letter: widget.letter,
           index: widget.index,
         ),
       ),
     );
+  }
+
+  void onPanUpdate(DragUpdateDetails details) {
+    setState(() {
+      points.add(details.localPosition);
+    });
+  }
+
+  void onPanEnd(DragEndDetails details) {
+    setState(() {
+      isDrawn = true; // اگر کشیدن تمام شد، دکمه فعال بشه
+    });
   }
 
   @override
@@ -72,9 +84,18 @@ class _LetterDetailPageState extends State<LetterDetailPage> {
               style: TextStyle(fontSize: 20),
             ),
             const SizedBox(height: 30),
+            GestureDetector(
+              onPanUpdate: onPanUpdate,
+              onPanEnd: onPanEnd,
+              child: CustomPaint(
+                size: Size(300, 300),
+                painter: LetterPainter(points),
+              ),
+            ),
+            const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
-                setState(() => isDrawn = true);
+                proceedToGame();
               },
               child: const Text('کشیدم! بریم مرحله بعد'),
             ),
@@ -89,5 +110,30 @@ class _LetterDetailPageState extends State<LetterDetailPage> {
         ),
       ),
     );
+  }
+}
+
+class LetterPainter extends CustomPainter {
+  final List<Offset?> points;
+
+  LetterPainter(this.points);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.blue
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = 5.0;
+
+    for (int i = 0; i < points.length - 1; i++) {
+      if (points[i] != null && points[i + 1] != null) {
+        canvas.drawLine(points[i]!, points[i + 1]!, paint);
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
   }
 }

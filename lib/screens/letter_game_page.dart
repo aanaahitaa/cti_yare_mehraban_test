@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import '../services/progress_service.dart';
 import '../theme/app_styles.dart';
+import 'letter_screen.dart';
 
 class LetterGamePage extends StatefulWidget {
   final String letter;
@@ -26,38 +27,9 @@ class _LetterGamePageState extends State<LetterGamePage> {
 
   void generateChoices() {
     const allLetters = [
-      'آ',
-      'ب',
-      'پ',
-      'ت',
-      'ث',
-      'ج',
-      'چ',
-      'ح',
-      'خ',
-      'د',
-      'ذ',
-      'ر',
-      'ز',
-      'ژ',
-      'س',
-      'ش',
-      'ص',
-      'ض',
-      'ط',
-      'ظ',
-      'ع',
-      'غ',
-      'ف',
-      'ق',
-      'ک',
-      'گ',
-      'ل',
-      'م',
-      'ن',
-      'و',
-      'ه',
-      'ی'
+      'آ', 'ب', 'پ', 'ت', 'ث', 'ج', 'چ', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'ژ',
+      'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ک', 'گ', 'ل', 'م',
+      'ن', 'و', 'ه', 'ی'
     ];
 
     final random = Random();
@@ -74,6 +46,17 @@ class _LetterGamePageState extends State<LetterGamePage> {
     choices = randomLetters.toList()..shuffle();
   }
 
+  String getNextLetter() {
+    const allLetters = [
+      'آ', 'ب', 'پ', 'ت', 'ث', 'ج', 'چ', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'ژ',
+      'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ک', 'گ', 'ل', 'م',
+      'ن', 'و', 'ه', 'ی'
+    ];
+
+    int currentIndex = allLetters.indexOf(widget.letter);
+    return currentIndex < allLetters.length - 1 ? allLetters[currentIndex + 1] : allLetters[0];
+  }
+
   void handleChoice(String selectedLetter) async {
     setState(() {
       gameCompleted = true;
@@ -81,9 +64,21 @@ class _LetterGamePageState extends State<LetterGamePage> {
     });
 
     if (isCorrectChosen) {
+      // برو به صفحه آموزش حرف بعدی
       await ProgressService.updateLearnedCount(widget.index);
       await Future.delayed(const Duration(seconds: 2));
-      if (context.mounted) Navigator.pop(context);
+      if (context.mounted) {
+        // باز کردن صفحه حرف بعدی
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LetterDetailPage(
+              letter: getNextLetter(),  // حرف بعدی
+              index: widget.index + 1,  // ایندکس بعدی
+            ),
+          ),
+        );
+      }
     }
   }
 
