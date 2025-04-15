@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'letter_screen.dart';
+import '../services/progress_service.dart';
 import '../theme/app_styles.dart';
 
 class AlphabetPage extends StatelessWidget {
@@ -19,32 +21,73 @@ class AlphabetPage extends StatelessWidget {
         title: Text('آموزش الفبا', style: AppStyles.appBarTextStyle),
         backgroundColor: AppColors.backgroundStart,
       ),
-      body: ListView.builder(
-        reverse: true, // شروع از پایین
-        itemCount: letters.length,
-        itemExtent: itemHeight,
-        itemBuilder: (context, index) {
-          return Stack(
-            children: [
-              // مسیر قبل از دکمه بیاد تا پشتش باشه
-              if (index < letters.length - 1)
-                CustomPaint(
-                  painter: PathSegmentPainter(
-                    fromLeft: index.isEven,
-                    toLeft: (index + 1).isEven,
-                    itemHeight: itemHeight,
-                  ),
-                  size: Size.infinite,
-                ),
+      body: FutureBuilder<int>(
+        future: ProgressService.getLearnedCount(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-              // دکمه
-              Align(
-                alignment: index.isEven
-                    ? Alignment.centerLeft
-                    : Alignment.centerRight,
-                child: LetterButton(
-                  text: letters[index],
-                  isActive: index == 0,
+          if (!snapshot.hasData) {
+            return const Center(child: Text("خطا در بارگذاری اطلاعات"));
+          }
+
+          int learnedCount = snapshot.data!;
+
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                child: LinearProgressIndicator(
+                  value: learnedCount / letters.length,
+                  backgroundColor: Colors.white24,
+                  color: AppColors.primary,
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  reverse: true,
+                  itemCount: letters.length,
+                  itemExtent: itemHeight,
+                  itemBuilder: (context, index) {
+                    bool isActive = index <= learnedCount;
+
+                    return Stack(
+                      children: [
+                        if (index < letters.length - 1)
+                          CustomPaint(
+                            painter: PathSegmentPainter(
+                              fromLeft: index.isEven,
+                              toLeft: (index + 1).isEven,
+                              itemHeight: itemHeight,
+                            ),
+                            size: Size.infinite,
+                          ),
+                        Align(
+                          alignment: index.isEven
+                              ? Alignment.centerLeft
+                              : Alignment.centerRight,
+                          child: LetterButton(
+                            text: letters[index],
+                            isActive: isActive,
+                            onPressed: isActive
+                                ? () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LetterDetailPage(
+                                    letter: letters[index],
+                                    index: index,
+                                  ),
+                                ),
+                              );
+                            }
+                                : null,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
             ],
@@ -58,39 +101,63 @@ class AlphabetPage extends StatelessWidget {
 class LetterButton extends StatelessWidget {
   final String text;
   final bool isActive;
+  final VoidCallback? onPressed;
 
   const LetterButton({
     super.key,
     required this.text,
     required this.isActive,
+    required this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-      width: 80,
-      height: 80,
-      decoration: BoxDecoration(
-        color: isActive ? AppColors.primary : AppColors.primaryDisabled,
-        shape: BoxShape.circle,
-        boxShadow: isActive
-            ? [
-          BoxShadow(
-            color: AppColors.primary.withOpacity(0.6),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        width: 80,
+        height: 80,
+        decoration: BoxDecoration(
+          color: isActive ? AppColors.primary : AppColors.primaryDisabled,
+          shape: BoxShape.circle,
+          boxShadow: isActive
+              ? [
+            BoxShadow(
+              color: AppColors.primary.withOpacity(0.6),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            )
+          ]
+              : [],
+        ),
+        child: Center(
+          child: isActive
+              ? Text(
+            text,
+            style: const TextStyle(
+              fontSize: 24,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
           )
-        ]
-            : [],
-      ),
-      child: Center(
-        child: Text(
-          text,
-          style: const TextStyle(
-            fontSize: 24,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
+              : Stack(
+            alignment: Alignment.center,
+            children: [
+              Text(
+                text,
+                style: const TextStyle(
+                  fontSize: 24,
+                  color: Colors.white54,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const Icon(
+                Icons.lock,
+                size: 40,
+                color: Colors.white,
+              ),
+            ],
           ),
         ),
       ),
@@ -114,18 +181,17 @@ class PathSegmentPainter extends CustomPainter {
     final paint = Paint()
       ..color = Colors.grey.withOpacity(0.5)
       ..strokeWidth = 3
-      ..strokeCap = StrokeCap.round // ← گوشه‌های گرد
+      ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
 
-    // تنظیم مختصات برای مسیر
     double startX = fromLeft ? 40 : size.width - 40;
-    double startY = size.height - (itemHeight / 2); // شروع از پایین
+    double startY = size.height - (itemHeight / 2);
 
     double endX = toLeft ? 40 : size.width - 40;
-    double endY = size.height - (itemHeight + itemHeight / 2); // پایان مسیر از پایین
+    double endY = size.height - (itemHeight + itemHeight / 2);
 
     double controlX = size.width / 2;
-    double controlY = startY - (itemHeight / 2); // کنترل مسیر به سمت بالا
+    double controlY = startY - (itemHeight / 2);
 
     final path = Path();
     path.moveTo(startX, startY);
