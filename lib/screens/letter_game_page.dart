@@ -17,6 +17,7 @@ class LetterGamePage extends StatefulWidget {
 class _LetterGamePageState extends State<LetterGamePage> {
   bool gameCompleted = false;
   bool isCorrectChosen = false;
+  bool hasAttempted = false;
   List<String> choices = [];
 
   @override
@@ -58,23 +59,24 @@ class _LetterGamePageState extends State<LetterGamePage> {
   }
 
   void handleChoice(String selectedLetter) async {
+    bool isCorrect = selectedLetter == widget.letter;
+
     setState(() {
-      gameCompleted = true;
-      isCorrectChosen = selectedLetter == widget.letter;
+      hasAttempted = true;
+      isCorrectChosen = isCorrect;
+      if (isCorrect) gameCompleted = true;
     });
 
-    if (isCorrectChosen) {
-      // برو به صفحه آموزش حرف بعدی
+    if (isCorrect) {
       await ProgressService.updateLearnedCount(widget.index);
       await Future.delayed(const Duration(seconds: 2));
       if (context.mounted) {
-        // باز کردن صفحه حرف بعدی
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => LetterDetailPage(
-              letter: getNextLetter(),  // حرف بعدی
-              index: widget.index + 1,  // ایندکس بعدی
+              letter: getNextLetter(),
+              index: widget.index + 1,
             ),
           ),
         );
@@ -136,7 +138,7 @@ class _LetterGamePageState extends State<LetterGamePage> {
                 }).toList(),
               ),
               const SizedBox(height: 40),
-              if (gameCompleted)
+              if (hasAttempted)
                 Text(
                   isCorrectChosen
                       ? 'آفرین! درست بود 👏'
