@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import '../widgets/custom_app_bar.dart';
 import 'letter_game_page.dart';
 import '../theme/app_styles.dart';
 
@@ -66,10 +67,7 @@ class _LetterDetailPageState extends State<LetterDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('حرف ${widget.letter}', style: AppStyles.appBarTextStyle),
-        backgroundColor: AppColors.backgroundStart,
-      ),
+      appBar: buildAppBar(context, 'حرف ${widget.letter}'),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

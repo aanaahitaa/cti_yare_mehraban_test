@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../widgets/custom_app_bar.dart';
+import 'home_screen.dart';
 import 'letter_screen.dart';
 import '../services/progress_service.dart';
 import '../theme/app_styles.dart';
@@ -17,10 +19,10 @@ class AlphabetPage extends StatelessWidget {
     double itemHeight = 110;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('آموزش الفبا', style: AppStyles.appBarTextStyle),
-        backgroundColor: AppColors.backgroundStart,
-      ),
+
+
+
+      appBar: buildAppBar(context, 'آموزش الفبا'),
       body: FutureBuilder<int>(
         future: ProgressService.getLearnedCount(),
         builder: (context, snapshot) {

@@ -12,7 +12,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'IRANSansDN'),
+      theme: ThemeData(
+        fontFamily: 'IRANSansDN',
+        appBarTheme: const AppBarTheme(
+          iconTheme: IconThemeData(color: Colors.white),),
+      ),
+
       home: const SplashScreen(),
     );
   }

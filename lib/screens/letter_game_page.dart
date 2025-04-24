@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import '../services/progress_service.dart';
 import '../theme/app_styles.dart';
+import '../widgets/custom_app_bar.dart';
 import 'letter_screen.dart';
 
 class LetterGamePage extends StatefulWidget {
@@ -88,11 +89,8 @@ class _LetterGamePageState extends State<LetterGamePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundEnd,
-      appBar: AppBar(
-        title: Text('بازی حرف ${widget.letter}',
-            style: AppStyles.appBarTextStyle),
-        backgroundColor: AppColors.backgroundStart,
-      ),
+      appBar: buildAppBar(context, 'بازی حرف ${widget.letter}'),
+
       body: Center(
         child: SingleChildScrollView(
           child: Column(
