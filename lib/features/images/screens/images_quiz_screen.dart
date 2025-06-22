@@ -209,29 +209,35 @@ class _ImagesQuizScreenState extends State<ImagesQuizScreen> {
                     fontFamily: 'IRANSansDN',
                   ),
                 )
-              else if (hasAnsweredCorrectly)
-                Text(
-                  'آفرین! درست بود ✅',
-                  style: TextStyle(
-                    color: Colors.green.shade700,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'IRANSansDN',
+              else if (hasAnsweredCorrectly && showNextButton)
+                Padding(
+                  padding: const EdgeInsets.only(top: 24.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'آفرین! درست بود ✅',
+                        style: TextStyle(
+                          color: Colors.green.shade700,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'IRANSansDN',
+                        ),
+                      ),
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: Colors.white,
+                        ),
+                        onPressed: goNext,
+                        icon: const Icon(Icons.arrow_forward),
+                        label: const Text('بعدی'),
+                      ),
+                    ],
                   ),
                 ),
 
-              const SizedBox(height: 16),
 
-              if (showNextButton)
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
-                  ),
-                  onPressed: goNext,
-                  icon: const Icon(Icons.arrow_forward),
-                  label: const Text('بعدی'),
-                ),
             ],
           ),
         ),

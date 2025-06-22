@@ -61,7 +61,8 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
         showWrongMessage = false;
       });
 
-      await _audioPlayer.play(AssetSource('sounds/colors/${colorWords[currentIndex]['key']}.mp3'));
+      await _audioPlayer.play(
+          AssetSource('sounds/colors/${colorWords[currentIndex]['key']}.mp3'));
 
       Future.delayed(const Duration(seconds: 1), () {
         if (mounted) {
@@ -151,16 +152,18 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-
               ...options.map((option) {
                 bool isCorrectOption = option == correctAnswer;
                 bool isSelected = option == selectedOption;
 
-                Color backgroundColor = AppColors.buttonMainShadowColor.withOpacity(0.6);
+                Color backgroundColor =
+                    AppColors.buttonMainShadowColor.withOpacity(0.6);
 
                 if (hasAnsweredCorrectly && isCorrectOption) {
                   backgroundColor = Colors.green.shade400;
-                } else if (!hasAnsweredCorrectly && isSelected && !isCorrectOption) {
+                } else if (!hasAnsweredCorrectly &&
+                    isSelected &&
+                    !isCorrectOption) {
                   backgroundColor = Colors.red.shade400;
                 }
 
@@ -180,7 +183,8 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
                         color: backgroundColor,
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.buttonMainShadowColor.withOpacity(0.6),
+                            color: AppColors.buttonMainShadowColor
+                                .withOpacity(0.6),
                             offset: const Offset(3, 3),
                             blurRadius: 6,
                           ),
@@ -204,9 +208,7 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
                   ),
                 );
               }).toList(),
-
               const SizedBox(height: 24),
-
               if (showWrongMessage)
                 Text(
                   'اشتباه بود! دوباره امتحان کن ❌',
@@ -217,28 +219,32 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
                     fontFamily: 'IRANSansDN',
                   ),
                 )
-              else if (hasAnsweredCorrectly)
-                Text(
-                  'آفرین! درست بود ✅',
-                  style: TextStyle(
-                    color: Colors.green.shade700,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'IRANSansDN',
+              else if (hasAnsweredCorrectly && showNextButton)
+                Padding(
+                  padding: const EdgeInsets.only(top: 24.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'آفرین! درست بود ✅',
+                        style: TextStyle(
+                          color: Colors.green.shade700,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'IRANSansDN',
+                        ),
+                      ),
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: Colors.white,
+                        ),
+                        onPressed: goNext,
+                        icon: const Icon(Icons.arrow_forward),
+                        label: const Text('بعدی'),
+                      ),
+                    ],
                   ),
-                ),
-
-              const SizedBox(height: 16),
-
-              if (showNextButton)
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
-                  ),
-                  onPressed: goNext,
-                  icon: const Icon(Icons.arrow_forward),
-                  label: const Text('بعدی'),
                 ),
             ],
           ),
