@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CustomButton(
-                text: '🎈 حروف الفبا',
+                text: '🔡 حروف الفبا',
                 onPressed: () {
                   Navigator.push(
                     context,
