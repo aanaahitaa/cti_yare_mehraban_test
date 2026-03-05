@@ -1,5 +1,7 @@
 import 'package:cti_yare_mehraban_test/core/widgets/custom_button.dart';
+import 'package:cti_yare_mehraban_test/features/mathematical/screens/numbers_screen.dart';
 import 'package:flutter/material.dart';
+
 // import 'package:koodak_app/features/colors/screens/colors_screen.dart';
 // import 'package:koodak_app/features/images/screens/images_screen.dart';
 
@@ -38,32 +40,40 @@ class HomeScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => ColorsScreen(),
-                    ),
+                    MaterialPageRoute(builder: (context) => ColorsScreen()),
                   );
                 },
               ),
-
 
               const SizedBox(height: 16),
               CustomButton(
                 text: '🖼️ تصاویر',
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ImagesLearningScreen(),),);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ImagesLearningScreen(),
+                    ),
+                  );
                 },
               ),
               const SizedBox(height: 16),
               CustomButton(
                 text: '🔢 ریاضی',
-                onPressed: () {}, // غیرفعال
-                isActive: false,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NumbersLearningScreen(),
+                    ),
+                  );
+                }, //
               ),
               const SizedBox(height: 16),
               CustomButton(
                 text: '📖 داستان‌ها',
                 onPressed: () {}, // غیرفعال
-                isActive: false,
+                isActive: true,
               ),
             ],
           ),
