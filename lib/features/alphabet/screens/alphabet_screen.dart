@@ -11,91 +11,128 @@ class AlphabetScreen extends StatelessWidget {
   const AlphabetScreen({super.key});
 
   final List<String> letters = const [
-    'ا', 'آ', 'ب', 'پ', 'ت', 'ث', 'ج', 'چ', 'ح', 'خ', 'د',
-    'ذ', 'ر', 'ز', 'ژ', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ',
-    'ع', 'غ', 'ف', 'ق', 'ک', 'گ', 'ل', 'م', 'ن', 'و', 'ه', 'ی'
+    'ا',
+    'آ',
+    'ب',
+    'پ',
+    'ت',
+    'ث',
+    'ج',
+    'چ',
+    'ح',
+    'خ',
+    'د',
+    'ذ',
+    'ر',
+    'ز',
+    'ژ',
+    'س',
+    'ش',
+    'ص',
+    'ض',
+    'ط',
+    'ظ',
+    'ع',
+    'غ',
+    'ف',
+    'ق',
+    'ک',
+    'گ',
+    'ل',
+    'م',
+    'ن',
+    'و',
+    'ه',
+    'ی',
   ];
 
   @override
   Widget build(BuildContext context) {
     const double itemHeight = 110;
 
-    return Scaffold(
-      backgroundColor: AppColors.backgroundEnd,
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        backgroundColor: AppColors.backgroundEnd,
 
-      appBar: buildAppBar(context, 'آموزش الفبا'),
-      body: FutureBuilder<int>(
-        future: ProgressService.getLearnedCount(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
+        appBar: buildAppBar(context, 'آموزش الفبا'),
+        body: FutureBuilder<int>(
+          future: ProgressService.getLearnedCount(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-          if (!snapshot.hasData) {
-            return const Center(child: Text("خطا در بارگذاری اطلاعات"));
-          }
+            if (!snapshot.hasData) {
+              return const Center(child: Text("خطا در بارگذاری اطلاعات"));
+            }
 
-          final int learnedCount = snapshot.data!;
+            final int learnedCount = snapshot.data!;
 
-          return Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-                child: LinearProgressIndicator(
-                  value: learnedCount / letters.length,
-                  backgroundColor: Colors.white,
-                  color: AppColors.primary,
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 8,
+                  ),
+                  child: LinearProgressIndicator(
+                    value: learnedCount / letters.length,
+                    backgroundColor: Colors.white,
+                    color: AppColors.primary,
+                  ),
                 ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  reverse: true,
-                  itemCount: letters.length,
-                  itemExtent: itemHeight,
-                  itemBuilder: (context, index) {
-                    final bool isActive = index <= learnedCount;
+                Expanded(
+                  child: ListView.builder(
+                    reverse: true,
+                    itemCount: letters.length,
+                    itemExtent: itemHeight,
+                    itemBuilder: (context, index) {
+                      final bool isActive = index <= learnedCount;
 
-                    return Stack(
-                      children: [
-                        if (index < letters.length - 1)
-                          CustomPaint(
-                            painter: PathSegmentPainter(
-                              fromLeft: index.isEven,
-                              toLeft: (index + 1).isEven,
-                              itemHeight: itemHeight,
+                      return Stack(
+                        children: [
+                          if (index < letters.length - 1)
+                            CustomPaint(
+                              painter: PathSegmentPainter(
+                                fromLeft: index.isEven,
+                                toLeft: (index + 1).isEven,
+                                itemHeight: itemHeight,
+                              ),
+                              size: Size.infinite,
                             ),
-                            size: Size.infinite,
+                          Align(
+                            alignment: index.isEven
+                                ? Alignment.centerLeft
+                                : Alignment.centerRight,
+                            child: LetterButton(
+                              text: letters[index],
+                              isActive: isActive,
+                              onPressed: isActive
+                                  ? () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              LetterDetailPage(
+                                                letter: letters[index],
+                                                index: index,
+                                              ),
+                                        ),
+                                      );
+                                    }
+                                  : null,
+                            ),
                           ),
-                        Align(
-                          alignment: index.isEven
-                              ? Alignment.centerLeft
-                              : Alignment.centerRight,
-                          child: LetterButton(
-                            text: letters[index],
-                            isActive: isActive,
-                            onPressed: isActive
-                                ? () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LetterDetailPage(
-                                    letter: letters[index],
-                                    index: index,
-                                  ),
-                                ),
-                              );
-                            }
-                                : null,
-                          ),
-                        ),
-                      ],
-                    );
-                  },
+                        ],
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
-          );
-        },
+              ],
+            );
+          },
+        ),
       ),
     );
   }

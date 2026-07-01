@@ -221,20 +221,23 @@ class _NumbersGameScreenState extends State<NumbersGameScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundEnd,
-      appBar: buildAppBar(context, 'بازی حافظه'),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-        child: GridView.builder(
-          itemCount: cards.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 15,
-            mainAxisSpacing: 15,
-            childAspectRatio: 1,
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        backgroundColor: AppColors.backgroundEnd,
+        appBar: buildAppBar(context, 'بازی حافظه'),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+          child: GridView.builder(
+            itemCount: cards.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 15,
+              mainAxisSpacing: 15,
+              childAspectRatio: 1,
+            ),
+            itemBuilder: (context, index) => buildCard(index),
           ),
-          itemBuilder: (context, index) => buildCard(index),
         ),
       ),
     );

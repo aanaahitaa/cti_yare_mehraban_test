@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:flutter/material.dart';
+
 import 'package:cti_yare_mehraban_test/core/constants/app_styles.dart';
 import 'package:cti_yare_mehraban_test/core/widgets/custom_app_bar.dart';
+import 'package:flutter/material.dart';
+
 import '../models/image_item.dart';
 
 class MemoryGameScreen extends StatefulWidget {
@@ -14,7 +16,8 @@ class MemoryGameScreen extends StatefulWidget {
   State<MemoryGameScreen> createState() => _MemoryGameScreenState();
 }
 
-class _MemoryGameScreenState extends State<MemoryGameScreen> with TickerProviderStateMixin {
+class _MemoryGameScreenState extends State<MemoryGameScreen>
+    with TickerProviderStateMixin {
   late List<String> cards;
   late List<bool> flipped;
   List<int> selectedIndices = [];
@@ -45,14 +48,17 @@ class _MemoryGameScreenState extends State<MemoryGameScreen> with TickerProvider
 
     _controllers = List.generate(
       cards.length,
-          (_) => AnimationController(
+      (_) => AnimationController(
         vsync: this,
         duration: const Duration(milliseconds: 300),
       ),
     );
 
     _animations = _controllers
-        .map((controller) => Tween<double>(begin: 0.0, end: 1.0).animate(controller))
+        .map(
+          (controller) =>
+              Tween<double>(begin: 0.0, end: 1.0).animate(controller),
+        )
         .toList();
   }
 
@@ -101,7 +107,9 @@ class _MemoryGameScreenState extends State<MemoryGameScreen> with TickerProvider
       builder: (_) => Directionality(
         textDirection: TextDirection.rtl,
         child: AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
           title: const Text('🎉 آفرین'),
           content: const Text('تمام تصاویر را درست پیدا کردی!'),
           actions: [
@@ -112,7 +120,8 @@ class _MemoryGameScreenState extends State<MemoryGameScreen> with TickerProvider
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => MemoryGameScreen(levelIndex: widget.levelIndex + 1),
+                      builder: (_) =>
+                          MemoryGameScreen(levelIndex: widget.levelIndex + 1),
                     ),
                   );
                 } else {
@@ -121,13 +130,17 @@ class _MemoryGameScreenState extends State<MemoryGameScreen> with TickerProvider
                     MaterialPageRoute(
                       builder: (_) => const MemoryGameScreen(levelIndex: 2),
                     ),
-                  );                }
+                  );
+                }
               },
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
                   Icon(Icons.arrow_circle_right, color: AppColors.primary),
-                  Text('   مرحله بعد', style: TextStyle(color: AppColors.primary)),
+                  Text(
+                    '   مرحله بعد',
+                    style: TextStyle(color: AppColors.primary),
+                  ),
                   SizedBox(width: 15),
                 ],
               ),
@@ -172,23 +185,25 @@ class _MemoryGameScreenState extends State<MemoryGameScreen> with TickerProvider
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
-                  boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 4)],
+                  boxShadow: const [
+                    BoxShadow(color: Colors.black26, blurRadius: 4),
+                  ],
                 ),
                 child: isUnderHalf
                     ? Padding(
-                  padding: const EdgeInsets.all(4),
-                  child: Image.asset(
-                    'assets/images/back_card.webp',
-                    fit: BoxFit.cover,
-                  ),
-                )
+                        padding: const EdgeInsets.all(4),
+                        child: Image.asset(
+                          'assets/images/back_card.webp',
+                          fit: BoxFit.cover,
+                        ),
+                      )
                     : ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image.asset(
-                    'assets/images/words/$imgKey.webp',
-                    fit: BoxFit.cover,
-                  ),
-                ),
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.asset(
+                          'assets/images/words/$imgKey.webp',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
               ),
             ),
           );
@@ -207,23 +222,25 @@ class _MemoryGameScreenState extends State<MemoryGameScreen> with TickerProvider
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundEnd,
-      appBar: buildAppBar(context, 'بازی حافظه'),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-        child: GridView.builder(
-          itemCount: cards.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 15,
-            mainAxisSpacing: 15,
-            childAspectRatio: 1,
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        backgroundColor: AppColors.backgroundEnd,
+        appBar: buildAppBar(context, 'بازی حافظه'),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
+          child: GridView.builder(
+            itemCount: cards.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 15,
+              mainAxisSpacing: 15,
+              childAspectRatio: 1,
+            ),
+            itemBuilder: (context, index) => buildCard(index),
           ),
-          itemBuilder: (context, index) => buildCard(index),
         ),
       ),
-
     );
   }
 }

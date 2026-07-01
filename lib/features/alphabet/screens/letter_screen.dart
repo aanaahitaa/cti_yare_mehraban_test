@@ -1,6 +1,8 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
+
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/material.dart';
+
 import '../../../core/constants/app_styles.dart';
 import '../../../core/widgets/custom_app_bar.dart';
 import 'letter_game_page.dart';
@@ -78,9 +80,9 @@ class _LetterDetailPageState extends State<LetterDetailPage> {
       await _audioPlayer.play(AssetSource('sounds/letters/$fileName'));
     } catch (e) {
       debugPrint('Error: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('خطا در پخش صدا')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('خطا در پخش صدا')));
     }
   }
 
@@ -94,10 +96,8 @@ class _LetterDetailPageState extends State<LetterDetailPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => LetterGamePage(
-          letter: widget.letter,
-          index: widget.index,
-        ),
+        builder: (_) =>
+            LetterGamePage(letter: widget.letter, index: widget.index),
       ),
     );
   }
@@ -117,80 +117,100 @@ class _LetterDetailPageState extends State<LetterDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundEnd,
-      appBar: buildAppBar(context, 'حرف ${widget.letter}'),
-      body: Stack(
-        children: [
-          Positioned(
-            top: 16,
-            right: 16,
-            child: IconButton(
-              icon: const Icon(Icons.volume_up_rounded, size: 36, color: AppColors.primary),
-              onPressed: playLetterSound,
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        backgroundColor: AppColors.backgroundEnd,
+        appBar: buildAppBar(context, 'حرف ${widget.letter}'),
+        body: Stack(
+          children: [
+            Positioned(
+              top: 16,
+              right: 16,
+              child: IconButton(
+                icon: const Icon(
+                  Icons.volume_up_rounded,
+                  size: 36,
+                  color: AppColors.primary,
+                ),
+                onPressed: playLetterSound,
+              ),
             ),
-          ),
-          Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    widget.letter,
-                    style: const TextStyle(fontSize: 120, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'با انگشتت این حرف رو بکش',
-                    style: TextStyle(fontSize: 25),
-                  ),
-                  const SizedBox(height: 30),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: Colors.grey.shade400,
-                          width: 1.2,
-                        ),
+            Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      widget.letter,
+                      style: const TextStyle(
+                        fontSize: 120,
+                        fontWeight: FontWeight.bold,
                       ),
-                      child: GestureDetector(
-                        onPanUpdate: onPanUpdate,
-                        onPanEnd: onPanEnd,
-                        child: ClipRRect(
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'با انگشتت این حرف رو بکش',
+                      style: TextStyle(fontSize: 25),
+                    ),
+                    const SizedBox(height: 30),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24.0,
+                        vertical: 16.0,
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
-                          child: CustomPaint(
-                            size: const Size(double.infinity, 300), // ارتفاع قابل تنظیم
-                            painter: LetterPainter(drawnPoints),
+                          border: Border.all(
+                            color: Colors.grey.shade400,
+                            width: 1.2,
+                          ),
+                        ),
+                        child: GestureDetector(
+                          onPanUpdate: onPanUpdate,
+                          onPanEnd: onPanEnd,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: CustomPaint(
+                              size: const Size(
+                                double.infinity,
+                                300,
+                              ), // ارتفاع قابل تنظیم
+                              painter: LetterPainter(drawnPoints),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
 
-                  const SizedBox(height: 30),
+                    const SizedBox(height: 30),
 
-                  if (isDrawn)
-                    ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.buttonMainColor,
-                        foregroundColor: Colors.black,
-                        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 18),
-                        textStyle: AppStyles.customButtonTextStyle,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                        elevation: 6,
+                    if (isDrawn)
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.buttonMainColor,
+                          foregroundColor: Colors.black,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 28,
+                            vertical: 18,
+                          ),
+                          textStyle: AppStyles.customButtonTextStyle,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 6,
+                        ),
+                        onPressed: goToGamePage,
+                        icon: const Icon(Icons.play_arrow_rounded, size: 28),
+                        label: const Text('مرحله بعد'),
                       ),
-                      onPressed: goToGamePage,
-                      icon: const Icon(Icons.play_arrow_rounded, size: 28),
-                      label: const Text('مرحله بعد'),
-                    ),
-
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -203,12 +223,14 @@ class LetterPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-
     final backgroundPaint = Paint()
       ..color = Colors.white
       ..style = PaintingStyle.fill;
 
-    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), backgroundPaint);
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, size.width, size.height),
+      backgroundPaint,
+    );
 
     final paint = Paint()
       ..color = AppColors.primary

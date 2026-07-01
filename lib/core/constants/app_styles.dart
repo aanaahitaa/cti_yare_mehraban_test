@@ -30,23 +30,17 @@ class AppColors {
   static const Color buttonMainShadowColor = Color(0xFFECB800);
 }
 
-
-
 class AppStyles {
   static final ButtonStyle buttonStyle = ElevatedButton.styleFrom(
     backgroundColor: AppColors.primary,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(15),
-    ),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
     padding: const EdgeInsets.symmetric(vertical: 20),
     minimumSize: const Size(348, 70),
   );
 
   static final ButtonStyle disabledButtonStyle = ElevatedButton.styleFrom(
     backgroundColor: AppColors.primaryDisabled,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(15),
-    ),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
     padding: const EdgeInsets.symmetric(vertical: 20),
     minimumSize: const Size(348, 70),
   );

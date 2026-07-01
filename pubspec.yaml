@@ -65,10 +65,13 @@ flutter:
      - assets/images/
      - assets/images/words/
      - assets/images/numbers/
+     - assets/images/stories/
      - assets/sounds/letters/
      - assets/sounds/words/
      - assets/sounds/colors/
      - assets/sounds/numbers/
+     - assets/sounds/stories/
+
 
 
 
