@@ -133,7 +133,7 @@ class _NumbersQuizScreenState extends State<NumbersQuizScreen> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: buildAppBar(context, 'کوئیز نمبر'),
+        appBar: buildAppBar(context, 'کوئیز '),
         body: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
