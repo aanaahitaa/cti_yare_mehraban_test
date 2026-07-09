@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/material.dart';
+
 import '../../../core/constants/app_styles.dart';
 import '../../../core/widgets/custom_app_bar.dart';
 import '../models/image_item.dart';
@@ -54,7 +55,9 @@ class _ImagesLearnScreenState extends State<ImagesLearnScreen> {
         textDirection: TextDirection.rtl,
         child: AlertDialog(
           title: const Text('آموزش تمام شد'),
-          content: const Text('می‌خواهی دوباره آموزش را شروع کنی یا برگردی به منو؟'),
+          content: const Text(
+            'می‌خواهی دوباره آموزش را شروع کنی یا برگردی به منو؟',
+          ),
           actions: [
             TextButton(
               onPressed: () {
@@ -65,10 +68,7 @@ class _ImagesLearnScreenState extends State<ImagesLearnScreen> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Text(
-                    'دوباره',
-                    style: TextStyle(color: AppColors.primary),
-                  ),
+                  Text('دوباره', style: TextStyle(color: AppColors.primary)),
                   SizedBox(width: 10),
                   Icon(Icons.refresh, color: AppColors.primary),
                 ],
@@ -77,17 +77,12 @@ class _ImagesLearnScreenState extends State<ImagesLearnScreen> {
             TextButton(
               onPressed: () => Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => ImagesLearningScreen(),
-                ),
+                MaterialPageRoute(builder: (context) => ImagesLearningScreen()),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Text(
-                    'بازگشت',
-                    style: TextStyle(color: AppColors.primary),
-                  ),
+                  Text('بازگشت', style: TextStyle(color: AppColors.primary)),
                   SizedBox(width: 10),
                   Icon(Icons.arrow_circle_left, color: AppColors.primary),
                 ],
@@ -99,8 +94,6 @@ class _ImagesLearnScreenState extends State<ImagesLearnScreen> {
     );
   }
 
-
-
   @override
   void dispose() {
     player.dispose();
@@ -111,81 +104,88 @@ class _ImagesLearnScreenState extends State<ImagesLearnScreen> {
   Widget build(BuildContext context) {
     final word = imageWords[currentIndex];
 
-    return Scaffold(
-      backgroundColor: AppColors.backgroundEnd,
-      appBar: buildAppBar(context, 'آموزش کلمات'),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.volume_up_rounded, size: 32, color: AppColors.primary),
-                    onPressed: playAudio,
-                  ),
-                  const SizedBox(width: 8),
-                ],
-              ),
-            ),
-            const SizedBox(height: 8),
-            Center(
-              child: Text(
-                word['value']!,
-                style: const TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primary,
-                  fontFamily: 'IRANSansDN',
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        backgroundColor: AppColors.backgroundEnd,
+        appBar: buildAppBar(context, 'آموزش کلمات'),
+        body: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.volume_up_rounded,
+                        size: 32,
+                        color: AppColors.primary,
+                      ),
+                      onPressed: playAudio,
+                    ),
+                    const SizedBox(width: 8),
+                  ],
                 ),
               ),
-            ),
-            const SizedBox(height: 4),
-            SizedBox(
-              height: 500,
-              child: Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                    color: AppColors.primaryDisabled,
-                    child: Image.asset(
-                      'assets/images/words/${word['key']}.webp',
-                      fit: BoxFit.cover,
+              const SizedBox(height: 8),
+              Center(
+                child: Text(
+                  word['value']!,
+                  style: const TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primary,
+                    fontFamily: 'IRANSansDN',
+                  ),
+                ),
+              ),
+              const SizedBox(height: 4),
+              SizedBox(
+                height: 500,
+                child: Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      color: AppColors.primaryDisabled,
+                      child: Image.asset(
+                        'assets/images/words/${word['key']}.webp',
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
 
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: AppColors.primary,
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: AppColors.primary,
+                    ),
+                    onPressed: goPrevious,
+                    icon: const Icon(Icons.arrow_back),
+                    label: const Text('قبلی'),
                   ),
-                  onPressed: goPrevious,
-                  icon: const Icon(Icons.arrow_back),
-                  label: const Text('قبلی'),
-                ),
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
+                  ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                    ),
+                    onPressed: goNext,
+                    icon: const Icon(Icons.arrow_forward),
+                    label: const Text('بعدی'),
                   ),
-                  onPressed: goNext,
-                  icon: const Icon(Icons.arrow_forward),
-                  label: const Text('بعدی'),
-                ),
-              ],
-            )
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

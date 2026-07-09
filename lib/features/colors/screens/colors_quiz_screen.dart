@@ -1,6 +1,8 @@
 import 'dart:math';
-import 'package:flutter/material.dart';
+
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/material.dart';
+
 import '../../../core/constants/app_styles.dart';
 import '../../../core/widgets/custom_app_bar.dart';
 import '../../colors/models/color_item.dart';
@@ -62,7 +64,8 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
       });
 
       await _audioPlayer.play(
-          AssetSource('sounds/colors/${colorWords[currentIndex]['key']}.mp3'));
+        AssetSource('sounds/colors/${colorWords[currentIndex]['key']}.mp3'),
+      );
 
       Future.delayed(const Duration(seconds: 1), () {
         if (mounted) {
@@ -133,120 +136,123 @@ class _ColorsQuizScreenState extends State<ColorsQuizScreen> {
     final currentItem = colorWords[currentIndex];
     final correctAnswer = currentItem['value']!;
 
-    return Scaffold(
-      backgroundColor: AppColors.backgroundEnd,
-      appBar: buildAppBar(context, 'کوئیز رنگ'),
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 250,
-                height: 250,
-                decoration: BoxDecoration(
-                  color: hexToColor(currentItem['color']!),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.black54, width: 2),
-                ),
-              ),
-              const SizedBox(height: 24),
-              ...options.map((option) {
-                bool isCorrectOption = option == correctAnswer;
-                bool isSelected = option == selectedOption;
-
-                Color backgroundColor =
-                    AppColors.buttonMainShadowColor.withOpacity(0.6);
-
-                if (hasAnsweredCorrectly && isCorrectOption) {
-                  backgroundColor = Colors.green.shade400;
-                } else if (!hasAnsweredCorrectly &&
-                    isSelected &&
-                    !isCorrectOption) {
-                  backgroundColor = Colors.red.shade400;
-                }
-
-                return Container(
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        backgroundColor: AppColors.backgroundEnd,
+        appBar: buildAppBar(context, 'کوئیز رنگ'),
+        body: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
                   width: 250,
-                  margin: const EdgeInsets.symmetric(vertical: 8),
-                  child: GestureDetector(
-                    onTap: () {
-                      if (!hasAnsweredCorrectly) {
-                        checkAnswer(option);
-                      }
-                    },
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      height: 70,
-                      decoration: BoxDecoration(
-                        color: backgroundColor,
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.buttonMainShadowColor
-                                .withOpacity(0.6),
-                            offset: const Offset(3, 3),
-                            blurRadius: 6,
+                  height: 250,
+                  decoration: BoxDecoration(
+                    color: hexToColor(currentItem['color']!),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.black54, width: 2),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                ...options.map((option) {
+                  bool isCorrectOption = option == correctAnswer;
+                  bool isSelected = option == selectedOption;
+
+                  Color backgroundColor = AppColors.buttonMainShadowColor
+                      .withOpacity(0.6);
+
+                  if (hasAnsweredCorrectly && isCorrectOption) {
+                    backgroundColor = Colors.green.shade400;
+                  } else if (!hasAnsweredCorrectly &&
+                      isSelected &&
+                      !isCorrectOption) {
+                    backgroundColor = Colors.red.shade400;
+                  }
+
+                  return Container(
+                    width: 250,
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    child: GestureDetector(
+                      onTap: () {
+                        if (!hasAnsweredCorrectly) {
+                          checkAnswer(option);
+                        }
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        height: 70,
+                        decoration: BoxDecoration(
+                          color: backgroundColor,
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.buttonMainShadowColor
+                                  .withOpacity(0.6),
+                              offset: const Offset(3, 3),
+                              blurRadius: 6,
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(16),
+                          border: hasAnsweredCorrectly && isCorrectOption
+                              ? Border.all(color: Colors.green, width: 3)
+                              : null,
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          option,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontFamily: 'IRANSansDN',
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
                           ),
-                        ],
-                        borderRadius: BorderRadius.circular(16),
-                        border: hasAnsweredCorrectly && isCorrectOption
-                            ? Border.all(color: Colors.green, width: 3)
-                            : null,
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        option,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontFamily: 'IRANSansDN',
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
                         ),
                       ),
                     ),
-                  ),
-                );
-              }).toList(),
-              const SizedBox(height: 24),
-              if (showWrongMessage)
-                Text(
-                  'اشتباه بود! دوباره امتحان کن ❌',
-                  style: TextStyle(
-                    color: Colors.red.shade700,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'IRANSansDN',
-                  ),
-                )
-              else if (hasAnsweredCorrectly && showNextButton)
-                Padding(
-                  padding: const EdgeInsets.only(top: 24.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'آفرین! درست بود ✅',
-                        style: TextStyle(
-                          color: Colors.green.shade700,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'IRANSansDN',
+                  );
+                }).toList(),
+                const SizedBox(height: 24),
+                if (showWrongMessage)
+                  Text(
+                    'اشتباه بود! دوباره امتحان کن ❌',
+                    style: TextStyle(
+                      color: Colors.red.shade700,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'IRANSansDN',
+                    ),
+                  )
+                else if (hasAnsweredCorrectly && showNextButton)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 24.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'آفرین! درست بود ✅',
+                          style: TextStyle(
+                            color: Colors.green.shade700,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'IRANSansDN',
+                          ),
                         ),
-                      ),
-                      ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          foregroundColor: Colors.white,
+                        ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: Colors.white,
+                          ),
+                          onPressed: goNext,
+                          icon: const Icon(Icons.arrow_forward),
+                          label: const Text('بعدی'),
                         ),
-                        onPressed: goNext,
-                        icon: const Icon(Icons.arrow_forward),
-                        label: const Text('بعدی'),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

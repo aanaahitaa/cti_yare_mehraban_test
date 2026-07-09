@@ -3,7 +3,7 @@ const List<Map<String, String>> numberWords = [
   {'key': 'do', 'value': 'دو'},
   {'key': 'seh', 'value': 'سه'},
   {'key': 'chahar', 'value': 'چهار'},
-  {'key': 'panch ', 'value': 'پنج'},
+  {'key': 'panch', 'value': 'پنج'},
   {'key': 'shash', 'value': 'شش'},
   {'key': 'haft', 'value': 'هفت'},
   {'key': 'hasht', 'value': 'هشت'},

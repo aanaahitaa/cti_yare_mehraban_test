@@ -1,5 +1,6 @@
 import 'package:cti_yare_mehraban_test/core/widgets/custom_button.dart';
 import 'package:cti_yare_mehraban_test/features/mathematical/screens/numbers_screen.dart';
+import 'package:cti_yare_mehraban_test/features/stories/screens/stories_list.dart';
 import 'package:flutter/material.dart';
 
 // import 'package:koodak_app/features/colors/screens/colors_screen.dart';
@@ -58,6 +59,7 @@ class HomeScreen extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 16),
+
               CustomButton(
                 text: '🔢 ریاضی',
                 onPressed: () {
@@ -72,7 +74,12 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 16),
               CustomButton(
                 text: '📖 داستان‌ها',
-                onPressed: () {}, // غیرفعال
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => StoriesPage()),
+                  );
+                },
                 isActive: true,
               ),
             ],

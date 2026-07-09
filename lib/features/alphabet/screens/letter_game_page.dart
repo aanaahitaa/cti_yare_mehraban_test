@@ -1,5 +1,7 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
+
 import '../../../core/constants/app_styles.dart';
 import '../../../core/widgets/custom_app_bar.dart';
 import '../services/alphabet_service.dart';
@@ -29,9 +31,38 @@ class _LetterGamePageState extends State<LetterGamePage> {
 
   void generateChoices() {
     const allLetters = [
-      'آ', 'ب', 'پ', 'ت', 'ث', 'ج', 'چ', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'ژ',
-      'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ک', 'گ', 'ل', 'م',
-      'ن', 'و', 'ه', 'ی'
+      'آ',
+      'ب',
+      'پ',
+      'ت',
+      'ث',
+      'ج',
+      'چ',
+      'ح',
+      'خ',
+      'د',
+      'ذ',
+      'ر',
+      'ز',
+      'ژ',
+      'س',
+      'ش',
+      'ص',
+      'ض',
+      'ط',
+      'ظ',
+      'ع',
+      'غ',
+      'ف',
+      'ق',
+      'ک',
+      'گ',
+      'ل',
+      'م',
+      'ن',
+      'و',
+      'ه',
+      'ی',
     ];
 
     final random = Random();
@@ -50,14 +81,46 @@ class _LetterGamePageState extends State<LetterGamePage> {
 
   String getNextLetter() {
     const allLetters = [
-      'آ', 'ب', 'پ', 'ت', 'ث', 'ج', 'چ', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'ژ',
-      'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ک', 'گ', 'ل', 'م',
-      'ن', 'و', 'ه', 'ی'
+      'آ',
+      'ب',
+      'پ',
+      'ت',
+      'ث',
+      'ج',
+      'چ',
+      'ح',
+      'خ',
+      'د',
+      'ذ',
+      'ر',
+      'ز',
+      'ژ',
+      'س',
+      'ش',
+      'ص',
+      'ض',
+      'ط',
+      'ظ',
+      'ع',
+      'غ',
+      'ف',
+      'ق',
+      'ک',
+      'گ',
+      'ل',
+      'م',
+      'ن',
+      'و',
+      'ه',
+      'ی',
     ];
 
     int currentIndex = allLetters.indexOf(widget.letter);
-    return currentIndex < allLetters.length - 1 ? allLetters[currentIndex + 1] : allLetters[0];
+    return currentIndex < allLetters.length - 1
+        ? allLetters[currentIndex + 1]
+        : allLetters[0];
   }
+
   void showEndDialog() {
     showDialog(
       context: context,
@@ -73,14 +136,15 @@ class _LetterGamePageState extends State<LetterGamePage> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => LetterDetailPage(letter: 'آ', index: 0),
+                    builder: (context) =>
+                        LetterDetailPage(letter: 'آ', index: 0),
                   ),
                 );
               },
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Text('دوباره', style: TextStyle(color: AppColors.primary),),
+                  Text('دوباره', style: TextStyle(color: AppColors.primary)),
                   SizedBox(width: 10),
                   Icon(Icons.refresh, color: AppColors.primary),
                 ],
@@ -93,9 +157,7 @@ class _LetterGamePageState extends State<LetterGamePage> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Text('بازگشت',
-                    style: TextStyle(color: AppColors.primary),
-                  ),
+                  Text('بازگشت', style: TextStyle(color: AppColors.primary)),
                   SizedBox(width: 10),
                   Icon(Icons.arrow_circle_left, color: AppColors.primary),
                 ],
@@ -121,9 +183,38 @@ class _LetterGamePageState extends State<LetterGamePage> {
       await Future.delayed(const Duration(seconds: 2));
 
       const allLetters = [
-        'آ', 'ب', 'پ', 'ت', 'ث', 'ج', 'چ', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'ژ',
-        'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ک', 'گ', 'ل', 'م',
-        'ن', 'و', 'ه', 'ی'
+        'آ',
+        'ب',
+        'پ',
+        'ت',
+        'ث',
+        'ج',
+        'چ',
+        'ح',
+        'خ',
+        'د',
+        'ذ',
+        'ر',
+        'ز',
+        'ژ',
+        'س',
+        'ش',
+        'ص',
+        'ض',
+        'ط',
+        'ظ',
+        'ع',
+        'غ',
+        'ف',
+        'ق',
+        'ک',
+        'گ',
+        'ل',
+        'م',
+        'ن',
+        'و',
+        'ه',
+        'ی',
       ];
 
       if (widget.index < allLetters.length - 1) {
@@ -148,77 +239,85 @@ class _LetterGamePageState extends State<LetterGamePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundEnd,
-      appBar: buildAppBar(context, 'بازی حرف ${widget.letter}'),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'روی حرف "${widget.letter}" کلیک کن',
-                style: AppStyles.customButtonTextStyle.copyWith(fontSize: 28),
-              ),
-              const SizedBox(height: 30),
-              Wrap(
-                spacing: 20,
-                runSpacing: 20,
-                alignment: WrapAlignment.center,
-                children: choices.map((letter) {
-                  final bool isCorrect = letter == widget.letter;
-                  final bool isChosen = hasAttempted && isCorrectChosen && letter == widget.letter;
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        backgroundColor: AppColors.backgroundEnd,
+        appBar: buildAppBar(context, 'بازی حرف ${widget.letter}'),
+        body: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'روی حرف "${widget.letter}" کلیک کن',
+                  style: AppStyles.customButtonTextStyle.copyWith(fontSize: 28),
+                ),
+                const SizedBox(height: 30),
+                Wrap(
+                  spacing: 20,
+                  runSpacing: 20,
+                  alignment: WrapAlignment.center,
+                  children: choices.map((letter) {
+                    final bool isCorrect = letter == widget.letter;
+                    final bool isChosen =
+                        hasAttempted &&
+                        isCorrectChosen &&
+                        letter == widget.letter;
 
-                  return GestureDetector(
-                    onTap: () {
-                      if (!gameCompleted) handleChoice(letter);
-                    },
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      width: 90,
-                      height: 90,
-                      decoration: BoxDecoration(
-                        color: gameCompleted && isCorrect
-                            ? Colors.green.shade300
-                            : AppColors.buttonMainColor,
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.buttonMainShadowColor.withOpacity(0.6),
-                            offset: const Offset(3, 3),
-                            blurRadius: 6,
-                          )
-                        ],
-                        borderRadius: BorderRadius.circular(16),
-                        border: isChosen ? Border.all(color: Colors.green, width: 3) : null,
-                      ),
-                      child: Center(
-                        child: Text(
-                          letter,
-                          style: AppStyles.customButtonTextStyle,
+                    return GestureDetector(
+                      onTap: () {
+                        if (!gameCompleted) handleChoice(letter);
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        width: 90,
+                        height: 90,
+                        decoration: BoxDecoration(
+                          color: gameCompleted && isCorrect
+                              ? Colors.green.shade300
+                              : AppColors.buttonMainColor,
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.buttonMainShadowColor
+                                  .withOpacity(0.6),
+                              offset: const Offset(3, 3),
+                              blurRadius: 6,
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(16),
+                          border: isChosen
+                              ? Border.all(color: Colors.green, width: 3)
+                              : null,
+                        ),
+                        child: Center(
+                          child: Text(
+                            letter,
+                            style: AppStyles.customButtonTextStyle,
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                }).toList(),
-              ),
-              const SizedBox(height: 40),
-              if (hasAttempted)
-                Text(
-                  isCorrectChosen
-                      ? 'آفرین! درست بود ✅'
-                      : 'اشتباه بود! دوباره امتحان کن ❌',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontFamily: 'IRANSansDN',
-                    color: isCorrectChosen ? Colors.green : Colors.red,
-                    fontWeight: FontWeight.bold,
-                  ),
+                    );
+                  }).toList(),
                 ),
-            ],
+                const SizedBox(height: 40),
+                if (hasAttempted)
+                  Text(
+                    isCorrectChosen
+                        ? 'آفرین! درست بود ✅'
+                        : 'اشتباه بود! دوباره امتحان کن ❌',
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontFamily: 'IRANSansDN',
+                      color: isCorrectChosen ? Colors.green : Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 }
-

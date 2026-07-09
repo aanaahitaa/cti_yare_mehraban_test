@@ -129,123 +129,125 @@ class _NumbersQuizScreenState extends State<NumbersQuizScreen> {
     final word = numberWords[currentIndex];
     final correctAnswer = word['value']!;
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: buildAppBar(context, 'کوئیز نمبر'),
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Image.asset(
-                  'assets/images/numbers/${word['key']}.jpeg',
-                  width: 250,
-                  height: 250,
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: buildAppBar(context, 'کوئیز '),
+        body: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.asset(
+                    'assets/images/numbers/${word['key']}.jpeg',
+                    width: 250,
+                    height: 250,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 24),
+                const SizedBox(height: 24),
 
-              ...options.map((option) {
-                bool isCorrectOption = option == correctAnswer;
-                bool isSelected = option == selectedOption;
+                ...options.map((option) {
+                  bool isCorrectOption = option == correctAnswer;
+                  bool isSelected = option == selectedOption;
 
-                Color backgroundColor = AppColors.buttonMainShadowColor
-                    .withOpacity(0.6);
+                  Color backgroundColor = AppColors.buttonMainShadowColor
+                      .withOpacity(0.6);
 
-                if (hasAnsweredCorrectly && isCorrectOption) {
-                  backgroundColor = Colors.green.shade400;
-                } else if (!hasAnsweredCorrectly &&
-                    isSelected &&
-                    !isCorrectOption) {
-                  backgroundColor = Colors.red.shade400;
-                }
+                  if (hasAnsweredCorrectly && isCorrectOption) {
+                    backgroundColor = Colors.green.shade400;
+                  } else if (!hasAnsweredCorrectly &&
+                      isSelected &&
+                      !isCorrectOption) {
+                    backgroundColor = Colors.red.shade400;
+                  }
 
-                return Container(
-                  width: 250,
-                  margin: const EdgeInsets.symmetric(vertical: 8),
-                  child: GestureDetector(
-                    onTap: () {
-                      if (!hasAnsweredCorrectly) {
-                        checkAnswer(option);
-                      }
-                    },
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      height: 70,
-                      decoration: BoxDecoration(
-                        color: backgroundColor,
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.buttonMainShadowColor.withOpacity(
-                              0.6,
+                  return Container(
+                    width: 250,
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    child: GestureDetector(
+                      onTap: () {
+                        if (!hasAnsweredCorrectly) {
+                          checkAnswer(option);
+                        }
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        height: 70,
+                        decoration: BoxDecoration(
+                          color: backgroundColor,
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.buttonMainShadowColor
+                                  .withOpacity(0.6),
+                              offset: const Offset(3, 3),
+                              blurRadius: 6,
                             ),
-                            offset: const Offset(3, 3),
-                            blurRadius: 6,
+                          ],
+                          borderRadius: BorderRadius.circular(16),
+                          border: hasAnsweredCorrectly && isCorrectOption
+                              ? Border.all(color: Colors.green, width: 3)
+                              : null,
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          option,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontFamily: 'IRANSansDN',
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
                           ),
-                        ],
-                        borderRadius: BorderRadius.circular(16),
-                        border: hasAnsweredCorrectly && isCorrectOption
-                            ? Border.all(color: Colors.green, width: 3)
-                            : null,
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        option,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontFamily: 'IRANSansDN',
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
                         ),
                       ),
                     ),
-                  ),
-                );
-              }),
+                  );
+                }),
 
-              const SizedBox(height: 24),
+                const SizedBox(height: 24),
 
-              if (showWrongMessage)
-                Text(
-                  'اشتباه بود! دوباره امتحان کن ❌',
-                  style: TextStyle(
-                    color: Colors.red.shade700,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'IRANSansDN',
-                  ),
-                )
-              else if (hasAnsweredCorrectly && showNextButton)
-                Padding(
-                  padding: const EdgeInsets.only(top: 24.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'آفرین! درست بود ✅',
-                        style: TextStyle(
-                          color: Colors.green.shade700,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'IRANSansDN',
+                if (showWrongMessage)
+                  Text(
+                    'اشتباه بود! دوباره امتحان کن ❌',
+                    style: TextStyle(
+                      color: Colors.red.shade700,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'IRANSansDN',
+                    ),
+                  )
+                else if (hasAnsweredCorrectly && showNextButton)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 24.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'آفرین! درست بود ✅',
+                          style: TextStyle(
+                            color: Colors.green.shade700,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'IRANSansDN',
+                          ),
                         ),
-                      ),
-                      ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          foregroundColor: Colors.white,
+                        ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: Colors.white,
+                          ),
+                          onPressed: goNext,
+                          icon: const Icon(Icons.arrow_forward),
+                          label: const Text('بعدی'),
                         ),
-                        onPressed: goNext,
-                        icon: const Icon(Icons.arrow_forward),
-                        label: const Text('بعدی'),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

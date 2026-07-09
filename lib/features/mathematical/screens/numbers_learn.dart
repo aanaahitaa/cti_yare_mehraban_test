@@ -106,85 +106,88 @@ class _NumbersLearnState extends State<NumbersLearn> {
   Widget build(BuildContext context) {
     final word = numberWords[currentIndex];
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: buildAppBar(context, 'آموزش کلمات'),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: const Icon(
-                      Icons.volume_up_rounded,
-                      size: 32,
-                      color: AppColors.primary,
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: buildAppBar(context, 'آموزش کلمات'),
+        body: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.volume_up_rounded,
+                        size: 32,
+                        color: AppColors.primary,
+                      ),
+                      onPressed: playAudio,
                     ),
-                    onPressed: playAudio,
+                    const SizedBox(width: 8),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 8),
+              Center(
+                child: Text(
+                  word['value']!,
+                  style: const TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primary,
+                    fontFamily: 'IRANSansDN',
                   ),
-                  const SizedBox(width: 8),
+                ),
+              ),
+              const SizedBox(height: 4),
+              SizedBox(
+                height: 500,
+                child: Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      color: AppColors.primaryDisabled,
+                      child: Image.asset(
+                        'assets/images/numbers/${word['key']}.jpeg',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: AppColors.primary,
+                    ),
+                    onPressed: goPrevious,
+                    icon: const Icon(Icons.arrow_back),
+                    label: const Text('قبلی'),
+                  ),
+                  ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                    ),
+                    onPressed: goNext,
+                    icon: const Icon(Icons.arrow_forward),
+                    label: const Text('بعدی'),
+                  ),
                 ],
               ),
-            ),
-            const SizedBox(height: 8),
-            Center(
-              child: Text(
-                word['value']!,
-                style: const TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primary,
-                  fontFamily: 'IRANSansDN',
-                ),
-              ),
-            ),
-            const SizedBox(height: 4),
-            SizedBox(
-              height: 500,
-              child: Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                    color: AppColors.primaryDisabled,
-                    child: Image.asset(
-                      'assets/images/numbers/${word['key']}.jpeg',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: AppColors.primary,
-                  ),
-                  onPressed: goPrevious,
-                  icon: const Icon(Icons.arrow_back),
-                  label: const Text('قبلی'),
-                ),
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
-                  ),
-                  onPressed: goNext,
-                  icon: const Icon(Icons.arrow_forward),
-                  label: const Text('بعدی'),
-                ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
